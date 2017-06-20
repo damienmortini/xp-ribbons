@@ -2,36 +2,45 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title></title>
-  <meta name="description" content="">
+  <title>xp-ribbons</title>
+  <meta name="description" content="xp-ribbons">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="src/index.css">
   <style>
+    @import "src/index.css";
+
     html, body {
       height: 100%;
       margin: 0;
       overflow: hidden;
     }
-    dnit-main {
+
+    xp-ribbons-main {
       width: 100%;
       height: 100%;
     }
   </style>
-  <script src="jspm_packages/system.js"></script>
-  <script src="jspm.browser.js"></script>
-  <script src="jspm.config.js"></script>
-  <script type="text/javascript">
-    (!/\bdev\b/.test(window.location.search) ? System.import("build/index.js") : System.import("webcomponents.js"))
-    .catch(function(e) {
-      console.log(e);
-      console.warn("The project hasn't been built yet, add the \"dev\" query string parameter to launch it from the \"src\" folder.");
-    })
-    .then(function() {
-      return System.import("src/index.js");
-    });
-  </script>
 </head>
 <body>
-  <dnit-main></dnit-main>
+  <xp-ribbons-main></xp-ribbons-main>
+
+  <script type="text/javascript">
+    (function() {
+      let script = document.createElement("script");
+      document.currentScript.parentNode.insertBefore(script, document.currentScript.nextSibling);
+      if(/\bdev\b/.test(window.location.search)) {
+        script.src = "node_modules/systemjs/dist/system.js";
+        script.onload = function() {
+          let config = document.createElement("script");
+          script.parentNode.insertBefore(config, script.nextSibling);
+          config.src = "systemjs.config.js";
+          config.onload = function() {
+            System.import("src/index.js");
+          }
+        }
+      } else {
+        script.src = "./build/index.js";
+      }
+    })();
+  </script>
 </body>
 </html>

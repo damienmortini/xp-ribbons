@@ -1,9 +1,9 @@
-dnit-main {
+xp-ribbons-main {
   display: block;
   position: relative;
 }
 
-dnit-main canvas {
+xp-ribbons-main canvas {
   width: 100%;
   height: 100%;
 }

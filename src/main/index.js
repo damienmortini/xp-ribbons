@@ -1,50 +1,56 @@
-import LoopElement from "dlib/dom/LoopElement.js";
+import "@webcomponents/custom-elements";
+
+import "three";
+
+import LoopElement from "dlib/customelements/LoopElement.js";
+import Loader from "dlib/utils/Loader.js";
 
 import Scene from "./Scene.js";
 import Renderer from "./Renderer.js";
 
-import templateHTML from "./template.html!text";
 let template = document.createElement("template");
-template.innerHTML = templateHTML;
+Loader.load("src/main/template.html").then((value) => {
+  template.innerHTML = value;
+});
 
-class Main extends LoopElement {
-  createdCallback() {
-    super.createdCallback();
+Loader.onLoad.then(() => {
+  window.customElements.define("xp-ribbons-main", class extends LoopElement {
+    constructor() {
+      super();
 
-    let templateClone = document.importNode(template.content, true);
-    this.appendChild(templateClone);
+      let templateClone = document.importNode(template.content, true);
+      this.appendChild(templateClone);
 
-    this.canvas = this.querySelector("canvas");
+      this.canvas = this.querySelector("canvas");
 
-    this.renderer = new Renderer(this.canvas);
+      this.renderer = new Renderer({canvas: this.canvas});
 
-    this.scene = new Scene();
-  }
+      this.scene = new Scene({canvas: this.canvas});
+    }
 
-  attachedCallback() {
-    super.attachedCallback();
-    window.addEventListener("resize", this.resize.bind(this));
-    this.resize();
-  }
+    connectedCallback() {
+      super.connectedCallback();
+      window.addEventListener("resize", this.resize.bind(this));
+      this.resize();
+    }
 
-  detachedCallback() {
-    super.detachedCallback();
-    window.removeEventListener("resize", this.resize.bind(this));
-  }
+    disconnectedCallback() {
+      super.disconnectedCallback();
+      window.removeEventListener("resize", this.resize.bind(this));
+    }
 
-  resize() {
-    let width = this.canvas.offsetWidth;
-    let height = this.canvas.offsetHeight;
-    this.scene.resize(width, height);
-    this.renderer.resize(width, height);
-    this.renderer.render(this.scene);
-  }
+    resize() {
+      let width = this.canvas.offsetWidth;
+      let height = this.canvas.offsetHeight;
+      this.scene.resize(width, height);
+      this.renderer.resize(width, height);
+      this.renderer.render({scene: this.scene});
+    }
 
-  update() {
-    super.update();
-    this.scene.update();
-    this.renderer.render(this.scene);
-  }
-}
-
-Main.register("dnit-main");
+    update() {
+      super.update();
+      this.scene.update();
+      this.renderer.render({scene: this.scene});
+    }
+  });
+});

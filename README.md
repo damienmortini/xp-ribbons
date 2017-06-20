@@ -1,14 +1,14 @@
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
-# dnit
+# xp-ribbons
 
-## Initialization
+## Initialization
 
-* Initialize the project for the first time with `npm run init`
+* Install dependencies with `npm install`
 
-## Launch
+## Launch
 
-* To launch it once it has been initialized simply use `npm start`
+* Launch the project with `npm start`, by default it will launch the development version, remove `?dev` from the URL to load the build version
 
 ## Build
 
@@ -16,10 +16,6 @@
 
 * Concatenated build with `npm run release`
 
-## Query string parameters
+## Query string parameters
 
 * `dev` to launch the development version from `src` folder
-
-  If not specified it will try to load the bundled `index.js` file from the `build` folder and fallback to `src` if it can't find it.
-
-NB: As Safari doesn't completely support ES6 atm, if you're targetting it, "es2015" needs to be set to true in jspm.config.js
