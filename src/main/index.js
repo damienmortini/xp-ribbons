@@ -1,12 +1,9 @@
 import "@webcomponents/custom-elements";
 
-import "three";
-
 import LoopElement from "dlib/customelements/LoopElement.js";
 import Loader from "dlib/utils/Loader.js";
 
-import Scene from "./Scene.js";
-import Renderer from "./Renderer.js";
+import View from "./View.js";
 
 let template = document.createElement("template");
 Loader.load("src/main/template.html").then((value) => {
@@ -15,42 +12,37 @@ Loader.load("src/main/template.html").then((value) => {
 
 Loader.onLoad.then(() => {
   window.customElements.define("xp-ribbons-main", class extends LoopElement {
-    constructor() {
-      super();
-
+    connectedCallback() {
+      super.connectedCallback();
+      
       let templateClone = document.importNode(template.content, true);
       this.appendChild(templateClone);
 
       this.canvas = this.querySelector("canvas");
 
-      this.renderer = new Renderer({canvas: this.canvas});
+      this.view = new View({canvas: this.canvas});
 
-      this.scene = new Scene({canvas: this.canvas});
-    }
+      window.addEventListener("resize", this._resizeBinded = this.resize.bind(this));
 
-    connectedCallback() {
-      super.connectedCallback();
-      window.addEventListener("resize", this.resize.bind(this));
       this.resize();
     }
 
     disconnectedCallback() {
-      super.disconnectedCallback();
-      window.removeEventListener("resize", this.resize.bind(this));
+      window.removeEventListener("resize", this._resizeBinded);
     }
 
     resize() {
       let width = this.canvas.offsetWidth;
       let height = this.canvas.offsetHeight;
-      this.scene.resize(width, height);
-      this.renderer.resize(width, height);
-      this.renderer.render({scene: this.scene});
+
+      this.canvas.width = width * window.devicePixelRatio;
+      this.canvas.height = height * window.devicePixelRatio;
+
+      this.view.resize(width, height);
     }
 
     update() {
-      super.update();
-      this.scene.update();
-      this.renderer.render({scene: this.scene});
+      this.view.update();
     }
   });
 });
