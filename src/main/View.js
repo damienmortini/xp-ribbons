@@ -51,8 +51,8 @@ export default class View {
           varying vec3 vNormal;
         `],
         ["end", `
-          // vec3 position = position * .1;
-          // position += instancePosition;
+          vec3 position = position;
+          position += instancePosition;
           gl_Position = projectionView * transform * vec4(position, 1.);
           vNormal = normal;
         `]
@@ -78,13 +78,13 @@ export default class View {
     this.mesh = new GLTFMesh({
       gl: this.gl,
       data: GLTF_DATA.meshes[0],
-      // attributes: [
-      //   ["instancePosition", {
-      //     data: testData,
-      //     size: 3,
-      //     divisor: 1
-      //   }]
-      // ]
+      attributes: [
+        ["instancePosition", {
+          data: testData,
+          size: 3,
+          divisor: 1
+        }]
+      ]
     });
 
     this.mesh.attributes.delete("uv");
@@ -109,7 +109,6 @@ export default class View {
     //   indiceData: new Uint16Array([0, 2, 3, 0, 3, 1, 4, 6, 7, 4, 7, 5, 8, 10, 11, 8, 11, 9, 12, 14, 15, 12, 15, 13, 16, 18, 19, 16, 19, 17, 20, 22, 23, 20, 23, 21])
     // });
 
-    console.log(this.mesh);
   }
 
   resize(width, height) {
@@ -128,8 +127,7 @@ export default class View {
 
     this.mesh.bind();
     this.mesh.draw({
-      // elements: false
-      // instanceCount: 10000
+      instanceCount: 2000
     });
   }
 }
