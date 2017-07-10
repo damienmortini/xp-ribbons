@@ -16,7 +16,7 @@
     "dlib": "0.0.30",
     "systemjs": "^0.20.13",
     "systemjs-plugin-babel": "0.0.21",
-    "three": "^0.85.2"
+    "three": "^0.86.0"
   },
   "devDependencies": {
     "babili": "^0.1.2",

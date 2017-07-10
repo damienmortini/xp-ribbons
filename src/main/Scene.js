@@ -30,36 +30,39 @@ export default class Scene extends THREEScene {
     this._cube = new Mesh(new BoxGeometry(.1, .1, .1), new MeshNormalMaterial());
     this.add(this._cube);
 
-    // const points = [];
+    const points = [];
 
-    // for (let i = 0; i < 20; i++) {
-    //   points.push(new Vector3(
-    //     (i - 10) * .5,
-    //     Math.cos(i * .5),
-    //     Math.sin(i * .5)
-    //   ));
-    // }
+    for (let i = 0; i < 20; i++) {
+      points.push(new Vector3(
+        (i - 10) * .5,
+        Math.cos(i * .5),
+        Math.sin(i * .5)
+      ));
+    }
 
-    // this.line = new THREELine({
-    //   points,
-    //   material: new THREEShaderMaterial({
-    //     type: "normal",
-    //     // wireframe: true
-    //   })
-    // });
+    this.line = new THREELine({
+      points,
+      detail: 5,
+      material: new THREEShaderMaterial({
+        type: "normal",
+        wireframe: true
+      })
+    });
 
     // this.add(this.line);
+
+    const material = new THREEShaderMaterial({
+      type: "normal",
+      // wireframe: true,
+    });
 
     this.ribbons = [];
     this._velocities = [];
     for (let i = 0; i < 1000; i++) {
       let ribbon = new THREERibbon({
-        points: new Array(100).fill().map(() => new Vector3(Math.random(), Math.random(), Math.random())),
+        points: new Array(20).fill().map(() => new Vector3(Math.random(), Math.random(), Math.random())),
         detail: 6,
-        material: new THREEShaderMaterial({
-          type: "normal",
-          // wireframe: true,
-        })
+        material
       });
       this.add(ribbon);
       this.ribbons.push(ribbon);
@@ -95,7 +98,7 @@ export default class Scene extends THREEScene {
     for (let i = 0; i < this.ribbons.length; i++) {
       let ribbon = this.ribbons[i];
       let velocity = this._velocities[i];
-      velocity.add(this._vector3.copy(this._force).sub(ribbon.head).multiplyScalar(.01));
+      velocity.add(this._vector3.copy(this._force).sub(ribbon.head).multiplyScalar((i % 10 + 1) * .01));
       ribbon.head.add(velocity);
       ribbon.update();
     }
