@@ -60,7 +60,7 @@ export default class Scene extends THREEScene {
     this._velocities = [];
     for (let i = 0; i < 1000; i++) {
       let ribbon = new THREERibbon({
-        points: new Array(20).fill().map(() => new Vector3(Math.random(), Math.random(), Math.random())),
+        points: new Array(100).fill().map(() => new Vector3(Math.random(), Math.random(), Math.random())),
         detail: 6,
         material
       });
