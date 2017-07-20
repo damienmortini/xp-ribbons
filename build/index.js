@@ -46127,15 +46127,26 @@ $__System.register('a', ['b', 'c', '11', 'd', 'f', '13'], function (_export, _co
             attribute float linePointId;
           `], ["main", `
             vec3 position = position;
+            vec3 normal = normal;
 
             vec3 linePosition = linePositions[int(linePointId)];
             vec3 lineDirection = normalize(linePositions[int(linePointId) + 1] - linePosition);
             lineDirection = mix(normalize(linePosition - linePositions[int(linePointId) - 1]), lineDirection, length(lineDirection));
             vec3 lineNormal = lineNormals[int(linePointId)];
+            vec3 lineBinormal = cross(lineNormal, lineDirection);
 
-            vec3 normal = lineNormal * position.x + cross(lineNormal, lineDirection) * position.z;
+            mat3 rotationMatrix = mat3(
+              lineNormal,
+              lineDirection,
+              lineBinormal
+            );
 
-            position = linePosition + normal * lineThickness;
+            position.y = 0.;
+            position *= lineThickness;
+            position = rotationMatrix * position;
+            position += linePosition;
+
+            normal = rotationMatrix * normal;
           `]]
             });
           }
@@ -46866,14 +46877,15 @@ $__System.register('a', ['b', 'c', '11', 'd', 'f', '13'], function (_export, _co
           this.add(this._cube);
 
           const points = [];
-          const SEGMENTS = 4;
+          const SEGMENTS = 20;
           for (let i = 0; i < SEGMENTS; i++) {
-            points.push(new Vector3$1((i - SEGMENTS * .5) * 5, Math.cos(i * .5), Math.sin(i * .5)));
+            points.push(new Vector3$1((i - (SEGMENTS - 1) * .5) * 1, Math.cos(i * .5), Math.sin(i * .5)));
           }
 
           this.line = new THREELine({
             points,
-            detail: 5,
+            detail: 3,
+            thickness: .5,
             material: new THREEShaderMaterial({
               type: "normal"
             })

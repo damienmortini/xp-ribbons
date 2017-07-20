@@ -31,10 +31,10 @@ export default class Scene extends THREEScene {
     this.add(this._cube);
 
     const points = [];
-    const SEGMENTS = 4;
+    const SEGMENTS = 20;
     for (let i = 0; i < SEGMENTS; i++) {
       points.push(new Vector3(
-        (i - SEGMENTS * .5) * 5,
+        (i - (SEGMENTS - 1) * .5) * 1,
         Math.cos(i * .5),
         Math.sin(i * .5)
       ));
@@ -42,7 +42,8 @@ export default class Scene extends THREEScene {
 
     this.line = new THREELine({
       points,
-      detail: 5,
+      detail: 3,
+      thickness: .5,
       material: new THREEShaderMaterial({
         type: "normal",
         // wireframe: true
