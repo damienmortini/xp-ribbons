@@ -65,7 +65,7 @@ export default class Scene extends THREEScene {
         detail: 6,
         material
       });
-      // this.add(ribbon);
+      this.add(ribbon);
       this.ribbons.push(ribbon);
 
       let velocity = new Vector3(
