@@ -46130,12 +46130,12 @@ $__System.register('a', ['b', 'c', '11', 'd', 'f', '13'], function (_export, _co
             vec3 normal = normal;
 
             vec3 linePosition = linePositions[int(linePointId)];
-            vec3 lineDirection = normalize(linePositions[int(linePointId) + 1] - linePosition);
-            lineDirection = mix(normalize(linePosition - linePositions[int(linePointId) - 1]), lineDirection, length(lineDirection));
+
+            vec3 lineDirection = normalize(linePointId == ${this.points.length - 1}. ? linePosition - linePositions[int(linePointId) - 1] : linePositions[int(linePointId) + 1] - linePosition);
             vec3 lineNormal = lineNormals[int(linePointId)];
             vec3 lineBinormal = cross(lineNormal, lineDirection);
 
-            mat3 rotationMatrix = mat3(
+            mat3 lineRotationMatrix = mat3(
               lineNormal,
               lineDirection,
               lineBinormal
@@ -46143,10 +46143,10 @@ $__System.register('a', ['b', 'c', '11', 'd', 'f', '13'], function (_export, _co
 
             position.y = 0.;
             position *= lineThickness;
-            position = rotationMatrix * position;
+            position = lineRotationMatrix * position;
             position += linePosition;
 
-            normal = rotationMatrix * normal;
+            normal = lineRotationMatrix * normal;
           `]]
             });
           }
@@ -46879,7 +46879,7 @@ $__System.register('a', ['b', 'c', '11', 'd', 'f', '13'], function (_export, _co
           const points = [];
           const SEGMENTS = 20;
           for (let i = 0; i < SEGMENTS; i++) {
-            points.push(new Vector3$1((i - (SEGMENTS - 1) * .5) * 1, Math.cos(i * .5), Math.sin(i * .5)));
+            points.push(new Vector3$1((i - (SEGMENTS - 1) * .5) * .2));
           }
 
           this.line = new THREELine({

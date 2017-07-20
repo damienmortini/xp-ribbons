@@ -34,9 +34,9 @@ export default class Scene extends THREEScene {
     const SEGMENTS = 20;
     for (let i = 0; i < SEGMENTS; i++) {
       points.push(new Vector3(
-        (i - (SEGMENTS - 1) * .5) * 1,
-        Math.cos(i * .5),
-        Math.sin(i * .5)
+        (i - (SEGMENTS - 1) * .5) * .2,
+        // Math.cos(i * .5),
+        // Math.sin(i * .5)
       ));
     }
 
